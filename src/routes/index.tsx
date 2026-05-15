@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppHeader } from "@/components/AppHeader";
-import { trends } from "@/data/trending";
-import { MoreHorizontal } from "lucide-react";
+import { trends, type Category } from "@/data/trending";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -13,10 +12,15 @@ export const Route = createFileRoute("/")({
   }),
 });
 
-function fmtPosts(n: number) {
-  if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, "") + "K पोस्ट";
-  return n + " पोस्ट";
-}
+const categoryEmoji: Record<Category, string> = {
+  Politics: "🗳️",
+  Cricket: "🏏",
+  Movie: "🎬",
+  Festival: "🪔",
+  Birthday: "🎂",
+  Announcement: "📢",
+  Event: "🎉",
+};
 
 function Index() {
   return (
@@ -35,26 +39,15 @@ function Index() {
               <Link
                 to="/topic/$tag"
                 params={{ tag: encodeURIComponent(t.tag) }}
-                className="flex items-start justify-between gap-3 px-4 py-3 transition-colors hover:bg-muted/60"
+                className="flex items-start gap-3 px-4 py-3 transition-colors hover:bg-muted/60"
               >
                 <div className="min-w-0">
-                  <div className="text-[11px] text-muted-foreground">
-                    {i + 1} · ट्रेंडिंग
-                  </div>
+                  <div className="text-[11px] text-muted-foreground">{i + 1}</div>
                   <div className="font-hindi mt-0.5 truncate text-[17px] font-semibold text-foreground">
+                    <span className="mr-1.5">{categoryEmoji[t.category]}</span>
                     {t.tag}
                   </div>
-                  <div className="font-hindi mt-0.5 text-xs text-muted-foreground">
-                    {fmtPosts(t.posts)}
-                  </div>
                 </div>
-                <button
-                  onClick={(e) => e.preventDefault()}
-                  className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-muted-foreground hover:bg-background"
-                  aria-label="अधिक"
-                >
-                  <MoreHorizontal className="h-4 w-4" />
-                </button>
               </Link>
             </li>
           ))}
