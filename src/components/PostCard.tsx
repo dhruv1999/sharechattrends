@@ -8,7 +8,7 @@ function fmt(n: number) {
 
 export function PostCard({ post }: { post: Post }) {
   return (
-    <article className="snap-start min-h-[88vh] rounded-3xl border bg-card p-5 shadow-sm">
+    <article className="px-4 py-4">
       <header className="flex items-center gap-3">
         <div
           className="grid h-11 w-11 place-items-center rounded-full text-base font-semibold text-white"
