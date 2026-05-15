@@ -9,7 +9,10 @@ export function AppHeader() {
           <div className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-saffron to-hot text-primary-foreground shadow">
             <span className="font-display text-lg font-bold">श</span>
           </div>
-          <span className="font-display text-xl font-bold tracking-tight">शेयरचैट</span>
+          <span className="text-xl font-bold tracking-tight">
+            <span className="font-hindi">शेयरचैट</span>
+            <span className="font-display"> Trends</span>
+          </span>
         </Link>
         <div className="flex flex-1 items-center gap-2 rounded-full border bg-card px-3 py-1.5 text-sm text-muted-foreground">
           <Search className="h-4 w-4" />
