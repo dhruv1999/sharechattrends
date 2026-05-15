@@ -1,75 +1,68 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppHeader } from "@/components/AppHeader";
-import { TrendCard } from "@/components/TrendCard";
 import { trends } from "@/data/trending";
-import { useState } from "react";
-import { Flame } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "शेयरचैट ट्रेंडिंग — Hindi Trending Topics" },
-      { name: "description", content: "भारत में अभी क्या ट्रेंड हो रहा है — हिंदी में टॉप 10 विषय, हीट स्कोर और AI-संचालित कारण।" },
+      { title: "ट्रेंडिंग — शेयरचैट" },
+      { name: "description", content: "भारत में अभी क्या ट्रेंड हो रहा है — हिंदी में टॉप विषय।" },
     ],
   }),
 });
 
-const windows = [
-  { id: "15m" as const, label: "15 मिनट" },
-  { id: "1h" as const, label: "1 घंटा" },
-  { id: "24h" as const, label: "24 घंटे" },
-  { id: "all" as const, label: "सभी" },
-];
+function fmtPosts(n: number) {
+  if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, "") + "K पोस्ट";
+  return n + " पोस्ट";
+}
 
 function Index() {
-  const [win, setWin] = useState<"15m" | "1h" | "24h" | "all">("all");
-  const filtered = win === "all" ? trends : trends.filter((t) => t.window === win);
-
   return (
     <div>
       <AppHeader />
-      <main className="mx-auto max-w-2xl px-4 pb-24 pt-6">
-        <div className="mb-5 flex items-end justify-between">
-          <div>
-            <h1 className="font-display text-3xl font-bold tracking-tight">
-              ट्रेंडिंग <span className="text-primary">अभी</span>
-            </h1>
-            <p className="font-hindi mt-1 text-sm text-muted-foreground">
-              <Flame className="mr-1 inline h-3.5 w-3.5 text-hot" />
-              भारत में सबसे ज़्यादा चर्चा में — AI द्वारा रैंक किए गए विषय
-            </p>
-          </div>
+      <main className="mx-auto max-w-2xl">
+        <div className="px-4 pt-5 pb-3">
+          <h1 className="font-display text-2xl font-bold tracking-tight">
+            भारत में ट्रेंडिंग
+          </h1>
         </div>
 
-        <div className="no-scrollbar mb-5 flex gap-2 overflow-x-auto">
-          {windows.map((w) => (
-            <button
-              key={w.id}
-              onClick={() => setWin(w.id)}
-              className={`font-hindi whitespace-nowrap rounded-full border px-4 py-1.5 text-sm transition ${
-                win === w.id
-                  ? "border-transparent bg-foreground text-background"
-                  : "bg-card text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {w.label}
-            </button>
-          ))}
-        </div>
-
-        <ul className="space-y-3">
-          {filtered.map((t, i) => (
+        <ul className="divide-y border-y bg-card">
+          {trends.map((t, i) => (
             <li key={t.id}>
-              <TrendCard trend={t} rank={i + 1} />
+              <Link
+                to="/topic/$tag"
+                params={{ tag: encodeURIComponent(t.tag) }}
+                className="flex items-start justify-between gap-3 px-4 py-3 transition-colors hover:bg-muted/60"
+              >
+                <div className="min-w-0">
+                  <div className="text-[11px] text-muted-foreground">
+                    {i + 1} · ट्रेंडिंग
+                  </div>
+                  <div className="font-hindi mt-0.5 truncate text-[17px] font-semibold text-foreground">
+                    {t.tag}
+                  </div>
+                  <div className="font-hindi mt-0.5 text-xs text-muted-foreground">
+                    {fmtPosts(t.posts)}
+                  </div>
+                </div>
+                <button
+                  onClick={(e) => e.preventDefault()}
+                  className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-muted-foreground hover:bg-background"
+                  aria-label="अधिक"
+                >
+                  <MoreHorizontal className="h-4 w-4" />
+                </button>
+              </Link>
             </li>
           ))}
-          {filtered.length === 0 && (
-            <li className="font-hindi rounded-2xl border bg-card p-8 text-center text-muted-foreground">
-              इस समय अंतराल में कोई ट्रेंड नहीं
-            </li>
-          )}
         </ul>
+
+        <div className="px-4 py-6">
+          <button className="font-hindi text-sm text-primary">और दिखाएं</button>
+        </div>
       </main>
     </div>
   );
