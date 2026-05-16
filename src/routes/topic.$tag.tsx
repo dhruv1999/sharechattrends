@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, Settings2 } from "lucide-react";
-import { trends, postsForTrend } from "@/data/trending";
+import { trends as fallbackTrends, postsForTrend } from "@/data/trending";
+import { fetchLiveTrends } from "@/lib/trending.functions";
 import { PostCard } from "@/components/PostCard";
 
 export const Route = createFileRoute("/topic/$tag")({
@@ -10,7 +13,17 @@ export const Route = createFileRoute("/topic/$tag")({
 function TopicPage() {
   const { tag } = Route.useParams();
   const decoded = decodeURIComponent(tag);
-  const trend = trends.find((t) => t.tag === decoded);
+
+  const fetcher = useServerFn(fetchLiveTrends);
+  const { data } = useQuery({
+    queryKey: ["live-trends"],
+    queryFn: () => fetcher(),
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  });
+
+  const all = [...(data?.trends ?? []), ...fallbackTrends];
+  const trend = all.find((t) => t.tag === decoded);
 
   if (!trend) {
     return (
