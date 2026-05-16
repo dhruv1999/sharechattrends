@@ -103,11 +103,6 @@ function Index() {
           </ul>
         )}
 
-        <div className="px-4 py-6">
-          <button onClick={() => refetch()} className="font-hindi text-sm text-primary">
-            और दिखाएं
-          </button>
-        </div>
       </main>
     </div>
   );
