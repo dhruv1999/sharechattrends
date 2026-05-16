@@ -37,8 +37,8 @@ function Index() {
   });
 
   const live = data?.trends ?? [];
-  const trends: Trend[] = live.length > 0 ? live : fallbackTrends;
   const isLive = live.length > 0;
+  const trends: Trend[] = (isLive ? live : fallbackTrends).slice(0, 10);
 
   return (
     <div>
