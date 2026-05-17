@@ -1,3 +1,5 @@
+# Open Trending Workflow file for diagram
+
 # STEP 1: Collect data (15 min, 1 hr, 24 hrs)
     Collect: Text, Image/Video, Hashtags, Comments, Likes, Views
     External Signals: Facebook Tier-2/3 public pages | Google Trends (higher weight for Hindi belt) | Hindi news websites
@@ -93,7 +95,7 @@
 
 
 
-# Weeks Roadmap
+# 4 Weeks Roadmap
 
 ## End User Pain Points
 
