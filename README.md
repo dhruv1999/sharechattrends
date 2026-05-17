@@ -1,4 +1,4 @@
-# Open Trending Workflow file for diagram
+# Note: Open Trending Workflow file for diagram
 
 # STEP 1: Collect data (15 min, 1 hr, 24 hrs)
     Collect: Text, Image/Video, Hashtags, Comments, Likes, Views
